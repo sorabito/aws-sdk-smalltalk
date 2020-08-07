@@ -4,7 +4,7 @@ Class {
 	#instVars : [
 		'settingsDict'
 	],
-	#category : #'AWS-Core'
+	#category : 'AWS-Core'
 }
 
 { #category : #'instance creation' }
@@ -80,17 +80,20 @@ AWSConfig >> hostUrl [
 
 { #category : #accessing }
 AWSConfig >> hostUrl: anObject [
-	^self  at: #hostUrl put: anObject
+	self settingsDict removeKey: #endpoint ifAbsent: [  ].
+	^ self at: #hostUrl put: anObject
 ]
 
 { #category : #accessing }
 AWSConfig >> regionName [
-	^self at: #regionName ifAbsentPut: [ self defaultRegionName ]
+	^ self at: #regionName ifAbsentPut: [ self defaultRegionName ]
 ]
 
 { #category : #accessing }
 AWSConfig >> regionName: anObject [
-	^self at: #regionName put: anObject
+	self settingsDict removeKey: #hostUrl ifAbsent: [  ].
+	self settingsDict removeKey: #endpoint ifAbsent: [  ].
+	^ self at: #regionName put: anObject
 ]
 
 { #category : #accessing }
@@ -111,6 +114,16 @@ AWSConfig >> serviceName [
 { #category : #accessing }
 AWSConfig >> serviceName: anObject [
 	^self  at: #serviceName put: anObject
+]
+
+{ #category : #accessing }
+AWSConfig >> sessionToken [
+	^self  at: #sessionToken ifAbsent: []
+]
+
+{ #category : #accessing }
+AWSConfig >> sessionToken: anObject [
+	^self  at: #sessionToken put: anObject
 ]
 
 { #category : #accessing }

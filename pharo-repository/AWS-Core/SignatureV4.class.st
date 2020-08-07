@@ -1,7 +1,7 @@
 Class {
 	#name : #SignatureV4,
 	#superclass : #Object,
-	#category : #'AWS-Core'
+	#category : 'AWS-Core'
 }
 
 { #category : #creating }
@@ -52,11 +52,6 @@ SignatureV4 >> creatCanonicalHeaders: request [
 { #category : #private }
 SignatureV4 >> creatPreSignedUrlToRequest: request config: awsConfig dateTime: datetimeString option: aDictionary [
 	| sign credential url |
-	sign := self
-		createSign: request
-		andConfig: awsConfig
-		andDateTime: datetimeString
-		andOption: nil.
 	credential := awsConfig accessKeyId , '/'
 		, (self createCredentialScopeValue: awsConfig andDateTime: datetimeString).
 	request uri queryAt: 'X-Amz-Algorithm' put: self signatureAlgorithm.
@@ -67,6 +62,11 @@ SignatureV4 >> creatPreSignedUrlToRequest: request config: awsConfig dateTime: d
 		ifNotNil: [ request uri queryAt: 'X-Amz-Expires' put: (aDictionary at: #expire) asString ].
 	url := 'https://' , awsConfig hostUrl.
 	
+	sign := self
+		createSign: request
+		andConfig: awsConfig
+		andDateTime: datetimeString
+		andOption: nil.
 	request uri query
 		ifNil: [ url := url ]
 		ifNotNil: [ url := url asString , '?' , (self getEncodedSortQueryString: request uri query) , '&' ].
@@ -83,7 +83,7 @@ SignatureV4 >> createCanonicalRequest: request andOption: aDictionary [
 	cs := request method , String lf.
 
 	"Add the canonical URI parameter, followed by a newline character. The canonical URI is the URI-encoded version of the absolute path component of the URI—everything in the URI from the HTTP host to the question mark character (?) that begins the query string parameters (if any). Then add a newline character."
-	cs := cs , request url pathPrintString , String lf.
+	cs := cs , request url awsEncodeCanonicalUri, String lf.
 
 	"Add the canonical query string, followed by a newline character. If the request does not include a query string, set this value in the canonical query to an empty string (essentially, a blank line). The example query does not contain a query string."
 	queryDict := request url query.
