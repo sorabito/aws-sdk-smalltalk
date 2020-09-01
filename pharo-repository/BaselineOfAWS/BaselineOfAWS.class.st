@@ -20,11 +20,12 @@ BaselineOfAWS >> baseline: spec [
 				baseline: 'NeoJSON'
 				with: [ 
 					spec repository: 'github://svenvc/NeoJSON/repository' ].
+
 			spec
-				package: 'XML-Parser'
-				with: [ spec
-						file: 'XML-Parser-monty.449';
-						repository: 'https://squeaksource.blueplane.jp/AsLegacyLibs' ].
+				baseline: 'XMLParser'
+				with: [
+					spec repository: 'github://pharo-contributions/XML-XMLParser:master'].
+
 			spec
 				for: #'pharo3.x'
 				do: [ 
