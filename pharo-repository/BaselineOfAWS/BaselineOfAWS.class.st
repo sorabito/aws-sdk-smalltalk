@@ -20,11 +20,12 @@ BaselineOfAWS >> baseline: spec [
 				baseline: 'NeoJSON'
 				with: [ 
 					spec repository: 'github://svenvc/NeoJSON/repository' ].
+
 			spec
-				package: 'XML-Parser'
-				with: [ spec
-						file: 'XML-Parser-monty.449';
-						repository: 'https://squeaksource.blueplane.jp/AsLegacyLibs' ].
+				baseline: 'XMLParser'
+				with: [
+					spec repository: 'github://pharo-contributions/XML-XMLParser:master'].
+
 			spec
 				for: #'pharo3.x'
 				do: [ 
@@ -35,9 +36,9 @@ BaselineOfAWS >> baseline: spec [
 				package: 'AWS-Core';
 				package: 'AWS-DynamoDB' with: [ spec requires: #('AWS-Core') ];
 				package: 'AWS-Lambda' with: [ spec requires: #('AWS-Core') ];
-				package: 'AWS-S3' with: [ spec requires: #('AWS-Core' 'XML-Parser') ];
+				package: 'AWS-S3' with: [ spec requires: #('AWS-Core' 'XMLParser') ];
 				package: 'AWS-ElasticTranscoder' with: [ spec requires: #('AWS-Core') ];
 				package: 'AWS-STS' with: [ spec requires: #('AWS-Core') ];
 				package: 'AWS-CloudFront' with: [ spec requires: #('AWS-Core') ];
-				package: 'AWS-SNS' with: [ spec requires: #('AWS-Core' 'XML-Parser') ] ].
+				package: 'AWS-SNS' with: [ spec requires: #('AWS-Core' 'XMLParser') ] ].
 ]
